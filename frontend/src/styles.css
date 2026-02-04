@@ -11,6 +11,11 @@ body {
   margin: auto;
 }
 
+select {
+  margin-left: 1rem;
+}
+.hint { opacity: 0.8; font-size: 0.9rem; }
+
 .panel label {
   display: block;
   margin-bottom: 1rem;

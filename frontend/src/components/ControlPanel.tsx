@@ -1,4 +1,7 @@
 import { ExposureSettings } from "../domain/types";
+import { ISO_OPTIONS, APERTURE_OPTIONS, SHUTTER_OPTIONS } from "../domain/options";
+import { ND_FILTERS } from "../data/ndFilters";
+import { formatShutter } from "../utils/format";
 
 type Props = {
   exposure: ExposureSettings;
@@ -17,40 +20,56 @@ export default function ControlPanel({
     <div className="panel">
       <label>
         ISO
-        <input
-          type="number"
+        <select
           value={exposure.iso}
-          step={100}
-          min={100}
-          onChange={e =>
-            onExposureChange({ ...exposure, iso: Number(e.target.value) })
-          }
-        />
+          onChange={(e) => onExposureChange({ ...exposure, iso: Number(e.target.value) })}
+        >
+          {ISO_OPTIONS.map((iso) => (
+            <option key={iso} value={iso}>{iso}</option>
+          ))}
+        </select>
       </label>
 
       <label>
-        Aperture (f/)
-        <input
-          type="number"
+        Shutter
+        <select
+          value={exposure.shutterSec}
+          onChange={(e) => onExposureChange({ ...exposure, shutterSec: Number(e.target.value) })}
+        >
+          {SHUTTER_OPTIONS.map((s) => (
+            <option key={s} value={s}>{formatShutter(s)}</option>
+          ))}
+        </select>
+      </label>
+
+      <label>
+        Aperture
+        <select
           value={exposure.aperture}
-          step={0.1}
-          min={1.2}
-          onChange={e =>
-            onExposureChange({ ...exposure, aperture: Number(e.target.value) })
-          }
-        />
+          onChange={(e) => onExposureChange({ ...exposure, aperture: Number(e.target.value) })}
+        >
+          {APERTURE_OPTIONS.map((a) => (
+            <option key={a} value={a}>f/{a}</option>
+          ))}
+        </select>
       </label>
 
       <label>
-        ND Stops
-        <input
-          type="number"
+        ND filter (single)
+        <select
           value={ndStops}
-          min={0}
-          max={10}
-          onChange={e => onNdChange(Number(e.target.value))}
-        />
+          onChange={(e) => onNdChange(Number(e.target.value))}
+        >
+          <option value={0}>None</option>
+          {ND_FILTERS.map((f) => (
+            <option key={f.id} value={f.stops}>{f.label}</option>
+          ))}
+        </select>
       </label>
+
+      <p className="hint">
+        Next: we’ll add stacking + variable ND in v2.
+      </p>
     </div>
   );
 }

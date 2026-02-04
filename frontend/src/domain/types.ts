@@ -1,5 +1,5 @@
-export type ExposureSettings = {
-  iso: number;
-  shutterSec: number;
-  aperture: number;
+export type NdFilter = {
+  id: string;
+  label: string;
+  stops: number;
 };
